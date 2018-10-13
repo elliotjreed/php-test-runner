@@ -5,7 +5,7 @@ LABEL Description="" Vendor="Elliot J. Reed" Version="1.0"
 WORKDIR /app
 VOLUME ["/app"]
 
-ENV PATH="/home/developer/.composer/vendor/bin:${PATH}"
+ENV PATH="/root/.composer/vendor/bin:${PATH}"
 
 RUN apk add --update icu yaml git openssh-client && \
     apk add --no-cache --virtual .build-deps \
@@ -28,15 +28,9 @@ RUN apk add --update icu yaml git openssh-client && \
     apk del .build-deps && \
     { find /usr/local/lib -type f -print0 | xargs -0r strip --strip-all -p 2>/dev/null || true; } && \
     rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/* && \
-    addgroup -S developer && adduser -S -G developer developer && \
     mkdir -p /app && \
-    chown -R developer:developer /app && \
     chmod -R 777 /app && \
-    echo "export PATH=\${PATH}:/home/developer/.composer/vendor/bin" > /etc/profile.d/composer.sh
-
-USER developer
-
-RUN composer global require --no-suggest --no-progress --classmap-authoritative --optimize-autoloader \
+    composer global require --no-suggest --no-progress --classmap-authoritative --optimize-autoloader \
         phpunit/phpunit \
         codeception/codeception \
         behat/behat \

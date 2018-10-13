@@ -37,7 +37,7 @@ RUN apk add --update icu yaml git openssh-client && \
         phpmd/phpmd \
         phpstan/phpstan \
         squizlabs/php_codesniffer && \
-    cd /home/developer/.composer/vendor && \
+    cd /root/.composer/vendor && \
     find -type f -iname '*readme*'  -exec rm -vf {} + && \
     find -type f -iname '*changelog*'  -exec rm -vf {} + && \
     find -type f -iname '*license*' -exec rm -vf {} +

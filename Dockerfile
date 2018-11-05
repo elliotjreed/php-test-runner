@@ -18,6 +18,7 @@ RUN apk add --update icu yaml git openssh-client && \
     docker-php-ext-install bcmath pdo_mysql opcache pdo_sqlite zip && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl && \
+    docker-php-ext-install sockets && \
     pecl install yaml && \
     docker-php-ext-enable yaml && \
     pecl install apcu && \

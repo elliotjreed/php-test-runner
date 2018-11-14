@@ -7,17 +7,25 @@ VOLUME ["/app"]
 
 ENV PATH="/root/.composer/vendor/bin:${PATH}"
 
-RUN apk add --update icu yaml git openssh-client && \
+RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo && \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         zlib-dev \
         bzip2-dev \
         sqlite-dev \
         icu-dev \
+        freetype-dev \
+        libpng-dev \
+        libjpeg-turbo-dev \
         yaml-dev && \
-    docker-php-ext-install bcmath pdo_mysql opcache pdo_sqlite zip && \
+    docker-php-ext-install bcmath pdo_mysql opcache pdo_sqlite zip gd && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl && \
+    docker-php-ext-configure gd \
+        --with-gd \
+        --with-freetype-dir=/usr/include/ \
+        --with-png-dir=/usr/include/ \
+        --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install sockets && \
     pecl install yaml && \
     docker-php-ext-enable yaml && \

@@ -47,9 +47,9 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo &
         phpstan/phpstan \
         squizlabs/php_codesniffer && \
     cd /root/.composer/vendor && \
-    find -type f -iname '*readme*'  -exec rm -vf {} + && \
-    find -type f -iname '*changelog*'  -exec rm -vf {} + && \
-    find -type f -iname '*license*' -exec rm -vf {} +
+    find . -type f \( -iname "*readme*" ! -iname "*.php" \) -exec rm -vf {} + && \
+    find . -type f \( -iname "*changelog*" ! -iname "*.php" \) -exec rm -vf {} + && \
+    find . -type f \( -iname "*license*" ! -iname "*.php" \) -exec rm -vf {} +
 
 CMD ["php"]
 

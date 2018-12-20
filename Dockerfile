@@ -1,4 +1,4 @@
-FROM php:alpine
+FROM php:7.2-alpine
 
 LABEL Description="" Vendor="Elliot J. Reed" Version="1.0"
 
@@ -12,6 +12,7 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo &
         $PHPIZE_DEPS \
         zlib-dev \
         bzip2-dev \
+        libzip-dev \
         sqlite-dev \
         icu-dev \
         freetype-dev \

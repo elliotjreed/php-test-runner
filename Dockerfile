@@ -18,10 +18,13 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo &
         freetype-dev \
         libpng-dev \
         libjpeg-turbo-dev \
+        libxml2-dev \
         yaml-dev && \
     docker-php-ext-install bcmath pdo_mysql opcache pdo_sqlite zip gd && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl && \
+    docker-php-ext-install xml && \
+    docker-php-ext-install soap && \
     docker-php-ext-configure gd \
         --with-gd \
         --with-freetype-dir=/usr/include/ \

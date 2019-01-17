@@ -7,7 +7,10 @@ VOLUME ["/app"]
 
 ENV PATH="/root/.composer/vendor/bin:${PATH}"
 
+COPY ./php-ini-overrides.ini /usr/local/etc/php/conf.d/99-overrides.ini
+
 RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo && \
+    apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv && \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         zlib-dev \
@@ -20,11 +23,9 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo &
         libjpeg-turbo-dev \
         libxml2-dev \
         yaml-dev && \
-    docker-php-ext-install bcmath pdo_mysql opcache pdo_sqlite zip gd && \
+    docker-php-ext-install bcmath pdo_mysql opcache pdo_sqlite zip gd iconv xml soap && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl && \
-    docker-php-ext-install xml && \
-    docker-php-ext-install soap && \
     docker-php-ext-configure gd \
         --with-gd \
         --with-freetype-dir=/usr/include/ \
@@ -54,6 +55,8 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo &
     find . -type f \( -iname "*readme*" ! -iname "*.php" \) -exec rm -vf {} + && \
     find . -type f \( -iname "*changelog*" ! -iname "*.php" \) -exec rm -vf {} + && \
     find . -type f \( -iname "*license*" ! -iname "*.php" \) -exec rm -vf {} +
+
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 CMD ["php"]
 

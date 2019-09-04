@@ -1,6 +1,6 @@
-FROM php:7.2-alpine
+FROM php:7.3-alpine
 
-LABEL Description="" Vendor="Elliot J. Reed" Version="1.0"
+LABEL Description="" Vendor="Elliot J. Reed" Version="2.0"
 
 WORKDIR /app
 VOLUME ["/app"]
@@ -9,8 +9,8 @@ ENV PATH="/root/.composer/vendor/bin:${PATH}"
 
 COPY ./php-ini-overrides.ini /usr/local/etc/php/conf.d/99-overrides.ini
 
-RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo && \
-    apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv && \
+RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo zip && \
+    apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community gnu-libiconv && \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         zlib-dev \
@@ -23,14 +23,15 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo &
         libjpeg-turbo-dev \
         libxml2-dev \
         yaml-dev && \
-    docker-php-ext-install bcmath pdo_mysql opcache pdo_sqlite zip gd iconv xml soap && \
+    docker-php-ext-install bcmath pdo_mysql opcache pdo_sqlite gd iconv xml soap && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl && \
     docker-php-ext-configure gd \
         --with-gd \
-        --with-freetype-dir=/usr/include/ \
-        --with-png-dir=/usr/include/ \
-        --with-jpeg-dir=/usr/include/ && \
+        --with-freetype-dir \
+        --with-png-dir \
+        --with-jpeg-dir && \
+    docker-php-ext-install gd && \
     docker-php-ext-install sockets && \
     pecl install yaml && \
     docker-php-ext-enable yaml && \
@@ -46,10 +47,6 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo &
     chmod -R 777 /app && \
     composer global require --no-suggest --no-progress --classmap-authoritative --optimize-autoloader \
         phpunit/phpunit \
-        codeception/codeception \
-        behat/behat \
-        phpmd/phpmd \
-        phpstan/phpstan \
         squizlabs/php_codesniffer && \
     cd /root/.composer/vendor && \
     find . -type f \( -iname "*readme*" ! -iname "*.php" \) -exec rm -vf {} + && \

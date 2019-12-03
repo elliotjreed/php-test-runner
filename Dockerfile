@@ -1,6 +1,6 @@
-FROM php:7.3-alpine
+FROM php:7.4-alpine
 
-LABEL Description="" Vendor="Elliot J. Reed" Version="2.0"
+LABEL Description="" Vendor="Elliot J. Reed" Version="3.0"
 
 WORKDIR /app
 VOLUME ["/app"]
@@ -56,4 +56,3 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo z
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 CMD ["php"]
-

@@ -5,6 +5,8 @@ LABEL Description="" Vendor="Elliot J. Reed" Version="3.0"
 WORKDIR /app
 VOLUME ["/app"]
 
+ENV PATH="/root/.composer/vendor/bin:${PATH}"
+
 COPY ./php-ini-overrides.ini /usr/local/etc/php/conf.d/99-overrides.ini
 
 RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo zip && \

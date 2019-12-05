@@ -5,8 +5,6 @@ LABEL Description="" Vendor="Elliot J. Reed" Version="3.0"
 WORKDIR /app
 VOLUME ["/app"]
 
-ENV PATH="/root/.composer/vendor/bin:${PATH}"
-
 COPY ./php-ini-overrides.ini /usr/local/etc/php/conf.d/99-overrides.ini
 
 RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo zip && \
@@ -23,14 +21,12 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo z
         libjpeg-turbo-dev \
         libxml2-dev \
         yaml-dev && \
-    docker-php-ext-install bcmath pdo_mysql opcache pdo_sqlite gd iconv xml soap && \
+    docker-php-ext-install bcmath pdo_mysql opcache soap && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl && \
     docker-php-ext-configure gd \
-        --with-gd \
-        --with-freetype-dir \
-        --with-png-dir \
-        --with-jpeg-dir && \
+        --with-freetype \
+        --with-jpeg && \
     docker-php-ext-install gd && \
     docker-php-ext-install sockets && \
     pecl install yaml && \

@@ -49,6 +49,7 @@ RUN apk add --update icu yaml git openssh-client freetype libpng libjpeg-turbo z
     cd /root/.composer/vendor && \
     find . -type f \( -iname "*readme*" ! -iname "*.php" \) -exec rm -vf {} + && \
     find . -type f \( -iname "*changelog*" ! -iname "*.php" \) -exec rm -vf {} + && \
+    find . -type f \( -iname "*contributing*" ! -iname "*.php" \) -exec rm -vf {} + && \
     find . -type f \( -iname "*license*" ! -iname "*.php" \) -exec rm -vf {} +
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php

@@ -1,4 +1,4 @@
-FROM php:7.8-alpine
+FROM php:8.0-alpine
 
 LABEL Description="" Vendor="Elliot J. Reed" Version="3.0"
 
